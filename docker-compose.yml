@@ -9,6 +9,13 @@ services:
     networks:
       - global-network
 
+  flask_home:
+    build: ./flask-home
+    ports:
+      - "5005:5005"
+    networks:
+      - global-network
+
   nginx:
     image: nginx
     ports:

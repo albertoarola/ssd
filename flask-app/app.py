@@ -8,18 +8,6 @@ app = Flask(__name__)
 
 app.secret_key = 'your_secret_key'
 
-# Configurazione per LDAP
-app.config['LDAP_HOST'] = 'ldap://ldap-server'
-app.config['LDAP_BASE_DN'] = 'dc=mycompany,dc=com'
-app.config['LDAP_BIND_USER_DN'] = 'cn=admin,dc=mycompany,dc=com'
-app.config['LDAP_BIND_USER_PASSWORD'] = 'admin_password'
-app.config['LDAP_USER_SEARCH_SCOPE'] = 'SUBTREE'
-app.config['LDAP_USER_OBJECT_FILTER'] = '(cn=%s)'
-app.config['LDAP_USER_LOGIN_ATTR'] = 'cn'
-
-# Configura il manager di login LDAP
-ldap_manager = LDAP3LoginManager(app)
-
 LDAP_HOST = 'ldap://ldap-server'
 LDAP_BASE_DN = 'dc=mycompany,dc=com'
 LDAP_BIND_USER_DN = 'cn=admin,dc=mycompany,dc=com'
@@ -74,9 +62,8 @@ def authenticate_ldap(username, password):
 @app.route('/')
 def root():
     if 'username' in session:
-        return redirect(url_for('dashboard'))
-    form = LDAPLoginForm()
-    return render_template('login.html', form=form)
+        return redirect('http://localhost/home')
+    return render_template('login.html')
 
 
 # Pagina di registrazione
@@ -90,7 +77,7 @@ def register():
         password = request.form['password']
     
         if add_user_to_ldap(username, firstname, lastname, email, password):
-            return redirect(url_for('dashboard'))
+            return redirect('http://localhost/home')
         else:
             return "Aggiunta dell'utente fallita"
 
@@ -104,18 +91,10 @@ def login():
         password = request.form['password']
         if authenticate_ldap(username, password):
             session['username'] = username
-            return redirect(url_for('dashboard'))
+            return redirect('http://localhost/home')
         else:
             return 'Autenticazione fallita'
     return render_template('login.html')
-   
-# Pagina di dashboard dopo il login
-@app.route('/dashboard')
-def dashboard():
-    if 'username' in session:
-        return render_template('dashboard.html', username=session['username'])
-    else:
-        return redirect(url_for('login'))
 
 # Logout
 @app.route('/logout')
