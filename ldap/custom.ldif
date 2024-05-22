@@ -1,0 +1,23 @@
+# Aggiunta dell'amministratore admin
+dn: cn=admin,dc=mycompany,dc=com
+changetype: add
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: admin
+sn: Admin
+userPassword: admin_password
+description: Amministratore del sistema
+
+# Aggiunta dell'utente normale alar
+dn: cn=alar,dc=mycompany,dc=com
+changetype: add
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: alar
+sn: Alar
+userPassword: Alberto
+description: Utente normale
