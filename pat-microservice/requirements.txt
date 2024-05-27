@@ -1,0 +1,14 @@
+Flask-JWT-Extended==4.6.0
+PyJWT==2.8.0
+click==8.1.7
+Flask==2.2.0
+flask-ldap3-login==0.9.18
+Flask-LDAPConn==0.7.2
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+itsdangerous==2.2.0
+Jinja2==3.1.4
+ldap3==2.9.1
+MarkupSafe==2.1.5
+waitress==3.0.0
+Werkzeug==2.2.0

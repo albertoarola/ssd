@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 
-@app.route('/home')
+@app.route('/homedoc')
 def home():
     username = request.cookies.get('username')
     if username:
@@ -20,7 +20,7 @@ def home():
         # L'utente non è loggato, reindirizza alla pagina di login
         return redirect('http://localhost/login')
     
-@app.route('/logout')
+@app.route('/logoutdoc')
 def logout():
     # Reindirizza alla prima applicazione per eseguire il logout completo
     return redirect('http://localhost/invalidate')

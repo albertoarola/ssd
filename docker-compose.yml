@@ -2,17 +2,24 @@ version: '3'
 
 services:
 
-  flask_app:
-    build: ./flask-app
+  auth_microservice:
+    build: ./auth-microservice
     ports:
       - "5000:5000"
     networks:
       - global-network
 
-  flask_home:
-    build: ./flask-home
+  doc_microservice:
+    build: ./doc-microservice
     ports:
       - "5005:5005"
+    networks:
+      - global-network
+
+  pat_microservice:
+    build: ./pat-microservice
+    ports:
+      - "5010:5010"
     networks:
       - global-network
 

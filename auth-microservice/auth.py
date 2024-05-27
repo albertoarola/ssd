@@ -35,7 +35,9 @@ def add_user_to_ldap(username, firstname, lastname, email, password):
             'givenName': firstname,
             'sn': lastname,
             'mail': email,
-            'userPassword': password
+            'title': 'paziente',
+            'userPassword': password,
+            'description': 'Utente paziente'
         }
 
         # Aggiunta dell'utente al server LDAP
@@ -58,13 +60,35 @@ def authenticate_ldap(username, password):
         conn = Connection(server, user=LDAP_BIND_USER_DN, password=LDAP_BIND_USER_PASSWORD, auto_bind=True)
         search_filter = f'(cn={username})'
         conn.search(search_base=LDAP_BASE_DN, search_filter=search_filter, attributes=['cn'])
-        if conn.entries and conn.bind():
-            return True
+        if conn.entries:
+            user_dn = conn.entries[0].entry_dn
+            user_conn = Connection(server, user=user_dn, password=password, auto_bind=True)
+            if user_conn.bind():
+                return True
+            else:
+                return False
         else:
             return False
     except Exception as e:
         print(e)
         return False
+    
+def get_user_title(username):
+    try:
+        server = Server(LDAP_HOST, get_info=ALL)
+        conn = Connection(server, user=LDAP_BIND_USER_DN, password=LDAP_BIND_USER_PASSWORD, auto_bind=True)
+        search_filter = f'(cn={username})'
+        conn.search(search_base=LDAP_BASE_DN, search_filter=search_filter, attributes=['title'])
+        if conn.entries:
+            user_entry = conn.entries[0]
+            user_title = user_entry['title'].value
+            
+            return user_title  # Assuming role is a single value
+        else:
+            return "User not found"
+    except Exception as e:
+        print(e)
+        return "Error during LDAP operation"
 
 @app.route('/')
 def root():
@@ -84,10 +108,7 @@ def register():
         password = request.form['password']
     
         if add_user_to_ldap(username, firstname, lastname, email, password):
-            session['username'] = username
-            response = redirect('http://localhost/home')
-            response.set_cookie('username', username)
-            return response
+            return redirect(url_for('login'))
         else:
             return "Aggiunta dell'utente fallita"
 
@@ -100,10 +121,19 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if authenticate_ldap(username, password):
-            session['username'] = username
-            response = redirect('http://localhost/home')
-            response.set_cookie('username', username)
-            return response
+            title = get_user_title(username)
+            if title == "medico":
+                session['username'] = username
+                response = redirect('http://localhost/homedoc')
+                response.set_cookie('username', username)
+                return response
+            elif title == "paziente":
+                session['username'] = username
+                response = redirect('http://localhost/homepat')
+                response.set_cookie('username', username)
+                return response
+            else:
+                return 'Ruolo non valido'              
         else:
             return 'Autenticazione fallita'
     return render_template('login.html')

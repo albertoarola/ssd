@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir --timeout=1000 -r requirements.txt
 
 COPY . .
 
-CMD ["python", "app.py"]
+CMD ["python", "patient.py"]

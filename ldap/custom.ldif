@@ -10,14 +10,17 @@ sn: Admin
 userPassword: admin_password
 description: Amministratore del sistema
 
-# Aggiunta dell'utente normale alar
-dn: cn=alar,dc=mycompany,dc=com
+# Aggiunta dell'utente va.casola
+dn: cn=va.casola,dc=mycompany,dc=com
 changetype: add
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
-cn: alar
-sn: Alar
-userPassword: Alberto
-description: Utente normale
+cn: va.casola
+givenName: Valentina
+sn: Casola
+mail: valentina.casola@unina.it
+title: medico
+userPassword: Valentina
+description: Utente medico

@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir --timeout=1000 -r requirements.txt
 
 COPY . .
 
-CMD ["python", "home.py"]
+CMD ["python", "auth.py"]
