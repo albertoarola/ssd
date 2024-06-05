@@ -1,0 +1,28 @@
+[
+    {
+        "uid": "1",
+        "description": "Policy per medici",
+        "effect": "allow",
+        "rules": {
+            "subject": {"$.role": {"condition": "Equals", "value": "medico"}},
+            "resource": {"$.name": {"condition": "Equals", "value": "/homedoc"}},
+            "action": {"$.method": {"condition": "Equals", "value": "read"}},
+            "context": {}
+        },
+        "targets": {},
+        "priority": 0
+    },
+    {
+        "uid": "2",
+        "description": "Policy per pazienti",
+        "effect": "allow",
+        "rules": {
+            "subject": {"$.role": {"condition": "Equals", "value": "paziente"}},
+            "resource": {"$.name": {"condition": "Equals", "value": "/homepat"}},
+            "action": {"$.method": {"condition": "Equals", "value": "read"}},
+            "context": {}
+        },
+        "targets": {},
+        "priority": 0
+    }
+]

@@ -23,6 +23,13 @@ services:
     networks:
       - global-network
 
+  pdp_microservice:
+    build: ./pdp-microservice
+    ports:
+      - "5015:5015"
+    networks:
+      - global-network
+
   nginx:
     image: nginx
     ports:
